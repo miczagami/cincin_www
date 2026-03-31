@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CinCin — AI-Powered Tasting Game | Scan. Taste. Compete.</title>
+  <meta name="description" content="Turn any bottle of wine, beer, or spirits into a multiplayer tasting game. AI identifies the drink, you guess the notes, and your Palate Profile tracks it all." />
+  <link rel="canonical" href="https://playcincin.com" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://playcincin.com" />
+  <meta property="og:title" content="CinCin — AI-Powered Tasting Game" />
+  <meta property="og:description" content="Scan any bottle. Guess the tasting notes. Compete with friends. Track your palate over time." />
+  <meta property="og:image" content="https://playcincin.com/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="en_AU" />
+  <meta property="og:site_name" content="CinCin" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="CinCin — AI-Powered Tasting Game" />
+  <meta name="twitter:description" content="Scan any bottle. Guess the tasting notes. Compete with friends." />
+  <meta name="twitter:image" content="https://playcincin.com/og-image.png" />
+
+  <meta name="theme-color" content="#0A0A0A" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&display=swap" rel="stylesheet" />
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "CinCin",
+    "url": "https://playcincin.com",
+    "description": "AI-powered tasting game that turns any bottle into a multiplayer guessing game.",
+    "applicationCategory": "GameApplication",
+    "operatingSystem": "Web",
+    "offers": [
+      { "@type": "Offer", "price": "0", "priceCurrency": "AUD", "name": "Free" },
+      { "@type": "Offer", "price": "9.99", "priceCurrency": "AUD", "name": "Pro (Annual)" }
+    ],
+    "author": {
+      "@type": "Organization",
+      "name": "CinCin",
+      "url": "https://playcincin.com",
+      "email": "hello@playcincin.com"
+    }
+  }
+  </script>
+
+  <style>
+    /* ═══════════════════════════════════════════
+       RESET & BASE
+       ═══════════════════════════════════════════ */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+    body {
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #0A0A0A;
+      color: #AAAAAA;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; cursor: pointer; }
+    img { max-width: 100%; display: block; }
+
+    /* ═══════════════════════════════════════════
+       TOKENS
+       ═══════════════════════════════════════════ */
+    :root {
+      --black: #0A0A0A;
+      --dark: #111111;
+      --card: #161616;
+      --border: #222222;
+      --muted: #555555;
+      --text: #AAAAAA;
+      --light: #CCCCCC;
+      --white: #FFFFFF;
+      --cyan: #22D3EE;
+      --cyan-dim: rgba(34,211,238,0.12);
+      --cyan-glow: rgba(34,211,238,0.25);
+      --green: #4ADE80;
+      --red: #F87171;
+    }
+
+    /* ═══════════════════════════════════════════
+       NOISE OVERLAY
+       ═══════════════════════════════════════════ */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      opacity: 0.025;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 256px;
+    }
+
+    /* ═══════════════════════════════════════════
+       UTILITIES
+       ═══════════════════════════════════════════ */
+    .container { max-width: 1140px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 2; }
+    .pill {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      background: var(--cyan-dim);
+      color: var(--cyan);
+    }
+    .section { padding: 96px 0; }
+    .section-title {
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 900;
+      color: var(--white);
+      line-height: 1.1;
+      letter-spacing: -0.025em;
+      margin-top: 16px;
+    }
+    .section-desc { font-size: 15px; color: var(--text); margin-top: 12px; max-width: 480px; }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      background: var(--cyan);
+      color: var(--black);
+      font-size: 15px;
+      font-weight: 700;
+      border-radius: 10px;
+      border: none;
+      transition: all 0.2s;
+    }
+    .btn-primary:hover { filter: brightness(1.1); box-shadow: 0 0 28px var(--cyan-glow); }
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      padding: 14px 28px;
+      background: transparent;
+      color: var(--cyan);
+      font-size: 15px;
+      font-weight: 700;
+      border-radius: 10px;
+      border: 1.5px solid rgba(34,211,238,0.4);
+      transition: all 0.2s;
+    }
+    .btn-secondary:hover { background: rgba(34,211,238,0.06); }
+
+    /* ═══════════════════════════════════════════
+       SCROLL ANIMATIONS
+       ═══════════════════════════════════════════ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ═══════════════════════════════════════════
+       NAV
+       ═══════════════════════════════════════════ */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      transition: all 0.4s;
+      border-bottom: 1px solid transparent;
+    }
+    .nav.scrolled {
+      background: rgba(10,10,10,0.88);
+      backdrop-filter: blur(16px) saturate(180%);
+      -webkit-backdrop-filter: blur(16px) saturate(180%);
+      border-color: var(--border);
+    }
+    .nav-inner {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .nav-logo-text { font-size: 22px; font-weight: 900; color: var(--white); letter-spacing: -0.02em; }
+    .nav-logo-sep { width: 1px; height: 16px; background: var(--muted); opacity: 0.3; }
+    .nav-logo-tag { font-size: 9px; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; color: var(--cyan); }
+    .nav-links { display: flex; align-items: center; gap: 28px; }
+    .nav-link {
+      font-size: 13px;
+      color: var(--muted);
+      background: none;
+      border: none;
+      transition: color 0.2s;
+    }
+    .nav-link:hover { color: var(--white); }
+    .nav-sep { width: 1px; height: 16px; background: var(--muted); opacity: 0.2; }
+    .nav-login { font-size: 13px; color: var(--cyan); background: none; border: none; transition: color 0.2s; }
+    .nav-login:hover { color: var(--white); }
+    .nav-cta {
+      font-size: 13px; font-weight: 700;
+      padding: 8px 20px;
+      background: var(--cyan);
+      color: var(--black);
+      border: none;
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+    .nav-cta:hover { filter: brightness(1.1); }
+    .nav-hamburger {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--white);
+      padding: 8px;
+    }
+    .mobile-menu {
+      display: none;
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 0.3s ease;
+      background: var(--dark);
+      border-top: 1px solid var(--border);
+    }
+    .mobile-menu.open { max-height: 320px; }
+    .mobile-menu-inner { padding: 20px 24px; }
+    .mobile-menu a, .mobile-menu button.mobile-link {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 10px 0;
+      font-size: 14px;
+      color: var(--light);
+      background: none;
+      border: none;
+    }
+    .mobile-menu-btns {
+      display: flex;
+      gap: 12px;
+      padding-top: 16px;
+      margin-top: 8px;
+      border-top: 1px solid var(--border);
+    }
+    .mobile-menu-btns a {
+      flex: 1;
+      text-align: center;
+      padding: 12px;
+      font-size: 13px;
+      font-weight: 700;
+      border-radius: 8px;
+    }
+    .mobile-btn-login { color: var(--cyan); border: 1.5px solid var(--cyan); }
+    .mobile-btn-signup { background: var(--cyan); color: var(--black); }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .nav-hamburger { display: block; }
+      .mobile-menu { display: block; }
+      .nav-logo-sep, .nav-logo-tag { display: none; }
+    }
+
+    /* ═══════════════════════════════════════════
+       HERO
+       ═══════════════════════════════════════════ */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+    .hero-bg1 {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 30% 40%, var(--cyan-dim) 0%, transparent 70%);
+    }
+    .hero-bg2 {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 50% at 75% 60%, rgba(34,211,238,0.06) 0%, transparent 60%);
+    }
+    .hero-grid {
+      position: absolute; inset: 0; opacity: 0.025;
+      background-image: linear-gradient(rgba(255,255,255,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.08) 1px, transparent 1px);
+      background-size: 72px 72px;
+    }
+    .hero-inner {
+      max-width: 1140px; margin: 0 auto; padding: 128px 24px 96px;
+      display: flex; align-items: center; gap: 80px;
+      position: relative; z-index: 2;
+    }
+    .hero-copy { flex: 1; max-width: 540px; }
+    .hero-title {
+      font-size: clamp(2.8rem, 6vw, 4.2rem);
+      font-weight: 900;
+      color: var(--white);
+      line-height: 1.02;
+      letter-spacing: -0.025em;
+      margin-top: 20px;
+    }
+    .hero-title span { color: var(--cyan); }
+    .hero-desc {
+      font-size: 17px;
+      color: var(--light);
+      line-height: 1.65;
+      margin-top: 24px;
+      max-width: 440px;
+    }
+    .hero-btns { display: flex; gap: 12px; margin-top: 36px; flex-wrap: wrap; }
+    .hero-note { font-size: 11px; color: var(--muted); margin-top: 20px; }
+    .hero-scroll {
+      position: absolute;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: bounce 2s infinite;
+      opacity: 0.4;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(8px); }
+    }
+    .hero-phone-wrap { flex-shrink: 0; }
+
+    @media (max-width: 960px) {
+      .hero-inner { flex-direction: column; text-align: center; gap: 48px; padding-top: 112px; }
+      .hero-copy { max-width: 100%; }
+      .hero-desc { margin-left: auto; margin-right: auto; }
+      .hero-btns { justify-content: center; }
+    }
+
+    /* ═══════════════════════════════════════════
+       PHONE MOCKUP
+       ═══════════════════════════════════════════ */
+    .phone {
+      width: 260px; height: 520px;
+      background: var(--dark);
+      border-radius: 36px;
+      border: 2px solid #2A2A2A;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 0 60px var(--cyan-glow), 0 20px 60px rgba(0,0,0,0.6);
+    }
+    .phone-notch {
+      position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+      width: 100px; height: 24px; background: var(--black); border-radius: 0 0 16px 16px; z-index: 10;
+    }
+    .phone-status {
+      height: 44px; padding: 14px 20px 0;
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 12px; font-weight: 600; color: var(--white); position: relative; z-index: 5;
+    }
+    .phone-content { height: calc(100% - 44px); overflow: hidden; position: relative; }
+    .phone-screen {
+      position: absolute; inset: 0; padding: 16px;
+      opacity: 0; transform: translateY(12px);
+      transition: all 0.5s ease;
+    }
+    .phone-screen.active { opacity: 1; transform: translateY(0); }
+    .phone-dots {
+      position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 6px; z-index: 10;
+    }
+    .phone-dot { width: 6px; height: 4px; border-radius: 2px; background: var(--muted); transition: all 0.3s; }
+    .phone-dot.active { width: 18px; background: var(--cyan); }
+    .phone-glow {
+      position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%);
+      width: 200px; height: 60px; background: var(--cyan-glow); filter: blur(40px); border-radius: 50%; opacity: 0.4;
+    }
+
+    /* Phone inner components */
+    .ph-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 10px; }
+    .ph-pill { display: inline-block; padding: 3px 8px; border-radius: 6px; font-size: 10px; font-weight: 600; }
+    .ph-btn { border-radius: 10px; padding: 12px 0; text-align: center; font-weight: 700; font-size: 14px; border: none; width: 100%; }
+    .ph-avatar { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+
+    /* ═══════════════════════════════════════════
+       STATS BAR
+       ═══════════════════════════════════════════ */
+    .stats {
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 40px 0;
+      position: relative; z-index: 2;
+    }
+    .stats-inner {
+      max-width: 800px; margin: 0 auto; padding: 0 24px;
+      display: flex; align-items: center; justify-content: center; gap: 64px;
+    }
+    .stat { text-align: center; }
+    .stat-num { font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 900; color: var(--white); font-variant-numeric: tabular-nums; }
+    .stat-label { font-size: 12px; color: var(--muted); margin-top: 4px; font-weight: 500; }
+    @media (max-width: 600px) { .stats-inner { gap: 32px; } }
+
+    /* ═══════════════════════════════════════════
+       HOW IT WORKS
+       ═══════════════════════════════════════════ */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px 64px;
+      margin-top: 56px;
+    }
+    .step { display: flex; gap: 16px; }
+    .step-num {
+      width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+      background: var(--cyan-dim); border: 1px solid rgba(34,211,238,0.3);
+      color: var(--cyan); font-size: 13px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      margin-top: 4px;
+    }
+    .step-icon { font-size: 20px; }
+    .step-title { font-size: 15px; font-weight: 700; color: var(--white); margin-top: 2px; }
+    .step-desc { font-size: 13px; color: var(--text); line-height: 1.55; margin-top: 4px; }
+    @media (max-width: 700px) { .steps-grid { grid-template-columns: 1fr; } }
+
+    /* ═══════════════════════════════════════════
+       FEATURES
+       ═══════════════════════════════════════════ */
+    .features-bg {
+      position: absolute; inset: 0; opacity: 0.015; z-index: 0;
+      background-image: radial-gradient(circle at 1.5px 1.5px, var(--cyan) 1px, transparent 0);
+      background-size: 28px 28px;
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 56px;
+    }
+    .feature-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      position: relative;
+      transition: all 0.3s;
+    }
+    .feature-card:hover {
+      border-color: rgba(34,211,238,0.25);
+      box-shadow: 0 0 20px var(--cyan-glow), inset 0 0 0 1px rgba(34,211,238,0.15);
+    }
+    .feature-card.accent {
+      background: linear-gradient(135deg, var(--card) 0%, var(--cyan-dim) 100%);
+      border-color: rgba(34,211,238,0.25);
+    }
+    .feature-card .pro-badge {
+      position: absolute; top: -1px; right: -1px;
+    }
+    .feature-icon { font-size: 24px; margin-bottom: 14px; }
+    .feature-title { font-size: 15px; font-weight: 700; color: var(--white); margin-bottom: 8px; }
+    .feature-desc { font-size: 13px; color: var(--text); line-height: 1.55; }
+    @media (max-width: 900px) { .features-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 600px) { .features-grid { grid-template-columns: 1fr; } }
+
+    /* ═══════════════════════════════════════════
+       PRICING
+       ═══════════════════════════════════════════ */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 56px;
+    }
+    .price-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+    }
+    .price-card.pro {
+      background: linear-gradient(160deg, var(--card) 0%, rgba(34,211,238,0.08) 100%);
+      border-color: rgba(34,211,238,0.25);
+    }
+    .price-popular {
+      position: absolute; top: 0; right: 0;
+      background: var(--cyan); color: var(--black);
+      font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 6px 12px; border-radius: 0 0 0 12px;
+    }
+    .price-tier { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 16px; }
+    .price-amount { font-size: 2.5rem; font-weight: 900; color: var(--white); }
+    .price-period { font-size: 13px; color: var(--muted); }
+    .price-note { font-size: 12px; color: var(--muted); margin-top: 4px; margin-bottom: 28px; }
+    .price-features { list-style: none; margin-bottom: 28px; }
+    .price-features li { display: flex; align-items: center; gap: 12px; font-size: 13px; margin-bottom: 14px; }
+    .price-check {
+      width: 20px; height: 20px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; flex-shrink: 0;
+    }
+    .price-check.on { background: var(--cyan-dim); color: var(--cyan); }
+    .price-check.off { background: var(--border); color: var(--muted); }
+    .price-btn { width: 100%; padding: 14px; font-size: 14px; font-weight: 700; border-radius: 10px; }
+    .price-btn.primary { background: var(--cyan); color: var(--black); border: none; }
+    .price-btn.primary:hover { filter: brightness(1.1); box-shadow: 0 0 24px var(--cyan-glow); }
+    .price-btn.secondary { background: transparent; color: var(--cyan); border: 1.5px solid rgba(34,211,238,0.4); }
+    .price-btn.secondary:hover { background: rgba(34,211,238,0.06); }
+    .price-trial { font-size: 11px; color: var(--muted); text-align: center; margin-top: 12px; }
+    @media (max-width: 700px) { .pricing-grid { grid-template-columns: 1fr; } }
+
+    /* ═══════════════════════════════════════════
+       TESTIMONIALS
+       ═══════════════════════════════════════════ */
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 56px;
+    }
+    .testimonial {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+    }
+    .testimonial-stars { color: #FBBF24; font-size: 13px; margin-bottom: 12px; letter-spacing: 2px; }
+    .testimonial-quote { font-size: 13px; color: var(--light); line-height: 1.6; flex: 1; }
+    .testimonial-footer { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--border); }
+    .testimonial-name { font-size: 13px; font-weight: 700; color: var(--white); }
+    .testimonial-ctx { font-size: 11px; color: var(--muted); margin-top: 2px; }
+    @media (max-width: 800px) { .testimonials-grid { grid-template-columns: 1fr; } }
+
+    /* ═══════════════════════════════════════════
+       FAQ
+       ═══════════════════════════════════════════ */
+    .faq-list { margin-top: 40px; max-width: 640px; }
+    .faq-item { border-bottom: 1px solid var(--border); }
+    .faq-q {
+      width: 100%;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 0;
+      background: none; border: none; text-align: left;
+      font-size: 15px; font-weight: 600; color: var(--white);
+      transition: color 0.2s;
+    }
+    .faq-q:hover { color: var(--cyan); }
+    .faq-icon {
+      color: var(--cyan); font-size: 18px; flex-shrink: 0; margin-left: 16px;
+      transition: transform 0.3s;
+    }
+    .faq-item.open .faq-icon { transform: rotate(135deg); }
+    .faq-a {
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.35s ease, padding 0.35s ease;
+    }
+    .faq-item.open .faq-a { max-height: 200px; padding-bottom: 20px; }
+    .faq-a p { font-size: 14px; color: var(--text); line-height: 1.6; }
+
+    /* ═══════════════════════════════════════════
+       FINAL CTA
+       ═══════════════════════════════════════════ */
+    .cta-bg {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 50% 50%, var(--cyan-dim) 0%, transparent 55%);
+    }
+
+    /* ═══════════════════════════════════════════
+       FOOTER
+       ═══════════════════════════════════════════ */
+    .footer { border-top: 1px solid var(--border); padding: 56px 0; position: relative; z-index: 2; }
+    .footer-inner { display: flex; justify-content: space-between; gap: 40px; }
+    .footer-brand-name { font-size: 20px; font-weight: 900; color: var(--white); letter-spacing: -0.02em; }
+    .footer-brand-desc { font-size: 12px; color: var(--muted); margin-top: 6px; max-width: 210px; line-height: 1.5; }
+    .footer-cols { display: flex; gap: 56px; }
+    .footer-col-title { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
+    .footer-col a { display: block; font-size: 13px; color: var(--text); margin-bottom: 10px; transition: color 0.2s; }
+    .footer-col a:hover { color: var(--white); }
+    .footer-bottom {
+      margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 11px; color: var(--muted);
+    }
+    @media (max-width: 700px) {
+      .footer-inner { flex-direction: column; }
+      .footer-bottom { flex-direction: column; gap: 8px; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ═══ NAV ═══ -->
+  <nav class="nav" id="nav">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">
+        <span class="nav-logo-text">CinCin</span>
+        <span class="nav-logo-sep"></span>
+        <span class="nav-logo-tag">AI · Tasting · Game</span>
+      </a>
+      <div class="nav-links">
+        <a href="#how" class="nav-link">How It Works</a>
+        <a href="#features" class="nav-link">Features</a>
+        <a href="#pricing" class="nav-link">Pricing</a>
+        <a href="#faq" class="nav-link">FAQ</a>
+        <span class="nav-sep"></span>
+        <a href="https://app.playcincin.com/auth/login" class="nav-login">Log In</a>
+        <a href="https://app.playcincin.com/auth/signup" class="nav-cta">Get Started</a>
+      </div>
+      <button class="nav-hamburger" id="hamburger" aria-label="Toggle menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+      </button>
+    </div>
+    <div class="mobile-menu" id="mobile-menu">
+      <div class="mobile-menu-inner">
+        <a href="#how" onclick="closeMobile()">How It Works</a>
+        <a href="#features" onclick="closeMobile()">Features</a>
+        <a href="#pricing" onclick="closeMobile()">Pricing</a>
+        <a href="#faq" onclick="closeMobile()">FAQ</a>
+        <div class="mobile-menu-btns">
+          <a href="https://app.playcincin.com/auth/login" class="mobile-btn-login">Log In</a>
+          <a href="https://app.playcincin.com/auth/signup" class="mobile-btn-signup">Sign Up</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ═══ HERO ═══ -->
+  <section class="hero">
+    <div class="hero-bg1"></div>
+    <div class="hero-bg2"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <div class="reveal"><span class="pill">Now in Beta · AU &amp; NZ</span></div>
+        <h1 class="hero-title reveal">The tasting game<br>you'll play every<br>time you open<br>a <span>bottle.</span></h1>
+        <p class="hero-desc reveal">CinCin turns any wine, beer, or spirit into a multiplayer guessing game — powered by AI that fetches real tasting notes, scores your accuracy, and tracks your palate.</p>
+        <div class="hero-btns reveal">
+          <a href="https://app.playcincin.com/auth/signup" class="btn-primary">
+            Get Started Free
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M13 7l5 5-5 5M6 12h12"/></svg>
+          </a>
+          <a href="#how" class="btn-secondary">See How It Works</a>
+        </div>
+        <p class="hero-note reveal">No credit card · 18+ age verification · Free tier always available</p>
+      </div>
+      <div class="hero-phone-wrap reveal">
+        <div style="position:relative; width:260px; height:520px;">
+          <div class="phone">
+            <div class="phone-notch"></div>
+            <div class="phone-status">
+              <span>9:41</span>
+              <svg width="48" height="12" viewBox="0 0 48 12" fill="none"><rect x="0" y="8" width="3" height="4" rx=".5" fill="#fff"/><rect x="4.5" y="5" width="3" height="7" rx=".5" fill="#fff"/><rect x="9" y="2" width="3" height="10" rx=".5" fill="#fff"/><rect x="13.5" y="0" width="3" height="12" rx=".5" fill="#fff" opacity=".3"/><rect x="24" y="1" width="20" height="10" rx="2" stroke="#fff" stroke-width="1"/><rect x="26" y="3" width="14" height="6" rx="1" fill="#4ADE80"/><rect x="45" y="4" width="2" height="4" rx=".5" fill="#fff" opacity=".4"/></svg>
+            </div>
+            <div class="phone-content">
+              <!-- Screen 1: Scan Confirm -->
+              <div class="phone-screen active" id="ps0">
+                <div style="text-align:center;margin-bottom:10px"><span class="ph-pill" style="background:rgba(34,211,238,0.12);color:#22D3EE">94% confidence</span></div>
+                <div class="ph-card">
+                  <div style="font-size:10px;color:#555;letter-spacing:0.08em;text-transform:uppercase;font-weight:600">Identified</div>
+                  <div style="font-size:16px;font-weight:800;color:#fff;margin-top:4px">Penfolds Bin 389</div>
+                  <div style="font-size:11px;color:#aaa;margin-top:2px">Cabernet Shiraz · 2021 · Barossa</div>
+                  <div style="display:flex;gap:5px;margin-top:8px">
+                    <span class="ph-pill" style="background:rgba(34,211,238,0.12);color:#22D3EE">14 notes</span>
+                    <span class="ph-pill" style="background:rgba(74,222,128,0.12);color:#4ADE80">Producer</span>
+                  </div>
+                </div>
+                <div class="ph-btn" style="background:#22D3EE;color:#0A0A0A">Confirm &amp; Play</div>
+              </div>
+              <!-- Screen 2: Gameplay -->
+              <div class="phone-screen" id="ps1">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+                  <span style="font-size:11px;color:#555;font-weight:600;text-transform:uppercase;letter-spacing:0.06em">Round 3</span>
+                  <span style="font-size:18px;font-weight:800;color:#22D3EE">42s</span>
+                </div>
+                <div style="display:flex;justify-content:center;gap:20px;margin-bottom:14px">
+                  <div style="text-align:center"><div class="ph-avatar" style="background:#22D3EE;color:#0A0A0A;margin:0 auto 3px">Y</div><div style="font-size:15px;font-weight:800;color:#fff">7</div><div style="font-size:9px;color:#555">You</div></div>
+                  <div style="text-align:center"><div class="ph-avatar" style="background:#222;color:#aaa;border:1px solid #2A2A2A;margin:0 auto 3px">S</div><div style="font-size:15px;font-weight:800;color:#fff">5</div><div style="font-size:9px;color:#555">Sarah</div></div>
+                  <div style="text-align:center"><div class="ph-avatar" style="background:#222;color:#aaa;border:1px solid #2A2A2A;margin:0 auto 3px">M</div><div style="font-size:15px;font-weight:800;color:#fff">3</div><div style="font-size:9px;color:#555">Mike</div></div>
+                </div>
+                <div style="background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.2);border-radius:10px;padding:10px 12px;margin-bottom:8px;display:flex;align-items:center;gap:8px">
+                  <span style="font-size:14px">✓</span>
+                  <div><div style="font-size:12px;font-weight:700;color:#4ADE80">Correct! +2</div><div style="font-size:10px;color:#aaa">Matched: Blackcurrant (specific)</div></div>
+                </div>
+                <div class="ph-card" style="display:flex;align-items:center;gap:8px;padding:10px 12px">
+                  <div style="flex:1;font-size:12px;color:#555">Enter your guess...</div>
+                  <div style="background:#22D3EE;border-radius:7px;padding:5px 10px;font-size:11px;font-weight:700;color:#0A0A0A">Guess</div>
+                </div>
+              </div>
+              <!-- Screen 3: Results -->
+              <div class="phone-screen" id="ps2">
+                <div style="text-align:center">
+                  <div style="font-size:26px;margin-bottom:4px">🏆</div>
+                  <div style="font-size:15px;font-weight:800;color:#fff">Game Over!</div>
+                  <div style="font-size:10px;color:#555;margin-bottom:12px">Penfolds Bin 389 · 2021</div>
+                </div>
+                <div class="ph-card" style="display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,#161616 0%,rgba(34,211,238,0.08) 100%);border-color:rgba(34,211,238,0.3)">
+                  <span style="font-size:13px;font-weight:800;color:#22D3EE;width:18px">#1</span>
+                  <div class="ph-avatar" style="background:#22D3EE;color:#0A0A0A">Y</div>
+                  <span style="font-size:12px;font-weight:600;color:#fff;flex:1">You</span>
+                  <span style="font-size:15px;font-weight:800;color:#22D3EE">12</span>
+                </div>
+                <div class="ph-card" style="display:flex;align-items:center;gap:10px">
+                  <span style="font-size:13px;font-weight:800;color:#555;width:18px">#2</span>
+                  <div class="ph-avatar" style="background:#222;color:#aaa;border:1px solid #2A2A2A">S</div>
+                  <span style="font-size:12px;font-weight:600;color:#fff;flex:1">Sarah</span>
+                  <span style="font-size:15px;font-weight:800;color:#fff">9</span>
+                </div>
+                <div class="ph-card" style="display:flex;align-items:center;gap:10px">
+                  <span style="font-size:13px;font-weight:800;color:#555;width:18px">#3</span>
+                  <div class="ph-avatar" style="background:#222;color:#aaa;border:1px solid #2A2A2A">M</div>
+                  <span style="font-size:12px;font-weight:600;color:#fff;flex:1">Mike</span>
+                  <span style="font-size:15px;font-weight:800;color:#fff">4</span>
+                </div>
+                <div style="display:flex;gap:6px;margin-top:10px">
+                  <div class="ph-btn" style="flex:1;background:#22D3EE;color:#0A0A0A;font-size:11px;padding:10px 0">Share Results</div>
+                  <div class="ph-btn" style="flex:1;background:transparent;border:1.5px solid #22D3EE;color:#22D3EE;font-size:11px;padding:10px 0">Play Again</div>
+                </div>
+              </div>
+            </div>
+            <div class="phone-dots">
+              <div class="phone-dot active" id="pd0"></div>
+              <div class="phone-dot" id="pd1"></div>
+              <div class="phone-dot" id="pd2"></div>
+            </div>
+          </div>
+          <div class="phone-glow"></div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="1.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    </div>
+  </section>
+
+  <!-- ═══ STATS ═══ -->
+  <section class="stats" id="stats-section">
+    <div class="stats-inner">
+      <div class="stat reveal"><div class="stat-num" data-count="12400">0</div><div class="stat-label">Bottles scanned</div></div>
+      <div class="stat reveal"><div class="stat-num" data-count="48200">0</div><div class="stat-label">Games played</div></div>
+      <div class="stat reveal"><div class="stat-num" data-count="1850">0</div><div class="stat-label">Cellar Clubs</div></div>
+    </div>
+  </section>
+
+  <!-- ═══ HOW IT WORKS ═══ -->
+  <section class="section" id="how">
+    <div class="container">
+      <div class="reveal"><span class="pill">How It Works</span></div>
+      <h2 class="section-title reveal">Four steps from bottle<br>to bragging rights</h2>
+      <div class="steps-grid">
+        <div class="step reveal">
+          <div class="step-num">1</div>
+          <div>
+            <div class="step-icon">📸</div>
+            <div class="step-title">Scan any bottle</div>
+            <div class="step-desc">Camera, barcode, or manual search. AI identifies the drink with a confidence score and fetches tasting notes from verified sources.</div>
+          </div>
+        </div>
+        <div class="step reveal">
+          <div class="step-num">2</div>
+          <div>
+            <div class="step-icon">👥</div>
+            <div class="step-title">Set up your game</div>
+            <div class="step-desc">Add players, choose your mode (pass-the-phone or multi-device), set the timer, and optionally tag the game to a Cellar Club season.</div>
+          </div>
+        </div>
+        <div class="step reveal">
+          <div class="step-num">3</div>
+          <div>
+            <div class="step-icon">🎯</div>
+            <div class="step-title">Guess the notes</div>
+            <div class="step-desc">Take turns naming tasting notes. Each guess is scored instantly — correct, specific, or wrong. Other players can't see what you've guessed.</div>
+          </div>
+        </div>
+        <div class="step reveal">
+          <div class="step-num">4</div>
+          <div>
+            <div class="step-icon">📊</div>
+            <div class="step-title">See the reveal</div>
+            <div class="step-desc">All tasting notes uncovered with sources. Your Palate Profile updates automatically. Share results or play again.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FEATURES ═══ -->
+  <section class="section" id="features" style="position:relative">
+    <div class="features-bg"></div>
+    <div class="container">
+      <div class="reveal"><span class="pill">Features</span></div>
+      <h2 class="section-title reveal">Everything you need to know</h2>
+      <div class="features-grid">
+        <div class="feature-card reveal">
+          <div class="feature-icon">📸</div>
+          <div class="feature-title">AI Bottle Scan</div>
+          <div class="feature-desc">Point your camera at any wine, beer, or spirits label. Our AI cross-references producer databases and returns verified tasting notes in seconds.</div>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon">🏆</div>
+          <div class="feature-title">Cellar Club Leagues</div>
+          <div class="feature-desc">Create a group with mates, set a season end date, and run a proper league. Points accumulate across games — not just one bottle.</div>
+        </div>
+        <div class="feature-card accent reveal">
+          <span class="pill pro-badge">Pro</span>
+          <div class="feature-icon">🧬</div>
+          <div class="feature-title">Palate Profile</div>
+          <div class="feature-desc">Every guess feeds your tasting DNA. See accuracy by flavour category, strengths and weaknesses, and how you're improving over time.</div>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon">🎯</div>
+          <div class="feature-title">Precision Scoring</div>
+          <div class="feature-desc">Generic correct = +1. Name the specific variant — like "Rainier cherry" instead of just "cherry" — and earn +2. Producer notes pay double.</div>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon">📱</div>
+          <div class="feature-title">Pass-the-Phone &amp; Multi-Device</div>
+          <div class="feature-desc">Hand the phone around the table, or everyone plays on their own device simultaneously. Works offline too.</div>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon">🛑</div>
+          <div class="feature-title">Opt-Out Mechanic</div>
+          <div class="feature-desc">Lock in your score at any point and watch others risk it. Knowing when to stop adds real strategy — not just taste knowledge.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ PRICING ═══ -->
+  <section class="section" id="pricing">
+    <div class="container">
+      <div class="reveal"><span class="pill">Pricing</span></div>
+      <h2 class="section-title reveal">Free to play, Pro to master</h2>
+      <p class="section-desc reveal">Start immediately with our free tier. Upgrade when you're ready for unlimited scans, full analytics, and the complete experience.</p>
+      <div class="pricing-grid">
+        <!-- Free -->
+        <div class="price-card reveal">
+          <div class="price-tier" style="color:var(--muted)">Free</div>
+          <div><span class="price-amount">$0</span> <span class="price-period">/forever</span></div>
+          <div class="price-note">&nbsp;</div>
+          <ul class="price-features">
+            <li><span class="price-check on">✓</span><span>Monthly bottle scans: 5</span></li>
+            <li><span class="price-check on">✓</span><span>Cellar Club memberships: 1</span></li>
+            <li><span class="price-check on">✓</span><span>Game settings: Default only</span></li>
+            <li><span class="price-check off">—</span><span style="color:var(--muted)">Palate Profile analytics</span></li>
+            <li><span class="price-check off">—</span><span style="color:var(--muted)">Game history &amp; replay</span></li>
+            <li><span class="price-check off">—</span><span style="color:var(--muted)">Ad-free experience</span></li>
+            <li><span class="price-check off">—</span><span style="color:var(--muted)">Priority AI scanning</span></li>
+          </ul>
+          <a href="https://app.playcincin.com/auth/signup" class="price-btn secondary">Get Started Free</a>
+        </div>
+        <!-- Pro -->
+        <div class="price-card pro reveal">
+          <div class="price-popular">Most Popular</div>
+          <div class="price-tier" style="color:var(--cyan)">Pro</div>
+          <div><span class="price-amount">$9.99</span> <span class="price-period">/mo</span></div>
+          <div class="price-note">Billed annually · or $12.99 monthly</div>
+          <ul class="price-features">
+            <li><span class="price-check on">✓</span><span style="color:var(--white)">Monthly bottle scans: Unlimited</span></li>
+            <li><span class="price-check on">✓</span><span style="color:var(--white)">Cellar Club memberships: Unlimited</span></li>
+            <li><span class="price-check on">✓</span><span style="color:var(--white)">Game settings: Fully custom</span></li>
+            <li><span class="price-check on">✓</span><span style="color:var(--white)">Palate Profile analytics</span></li>
+            <li><span class="price-check on">✓</span><span style="color:var(--white)">Game history &amp; replay</span></li>
+            <li><span class="price-check on">✓</span><span style="color:var(--white)">Ad-free experience</span></li>
+            <li><span class="price-check on">✓</span><span style="color:var(--white)">Priority AI scanning</span></li>
+          </ul>
+          <a href="https://app.playcincin.com/auth/signup" class="price-btn primary">Start 7-Day Free Trial</a>
+          <div class="price-trial">Trial starts after your first game · Cancel anytime</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ TESTIMONIALS ═══ -->
+  <section class="section">
+    <div class="container">
+      <div class="reveal" style="text-align:center">
+        <span class="pill">From Beta Testers</span>
+        <h2 class="section-title" style="margin-top:16px">Built for wine nights,<br>perfected by mates</h2>
+      </div>
+      <div class="testimonials-grid">
+        <div class="testimonial reveal">
+          <div class="testimonial-stars">★★★★★</div>
+          <div class="testimonial-quote">"We used to just drink wine — now we actually pay attention to what we're tasting. The scoring makes it properly competitive."</div>
+          <div class="testimonial-footer">
+            <div class="testimonial-name">Sarah K.</div>
+            <div class="testimonial-ctx">Weekly wine club, Sydney</div>
+          </div>
+        </div>
+        <div class="testimonial reveal">
+          <div class="testimonial-stars">★★★★★</div>
+          <div class="testimonial-quote">"My mates thought they were craft beer experts until CinCin exposed their palate blind spots. It's become a weekly grudge match."</div>
+          <div class="testimonial-footer">
+            <div class="testimonial-name">James T.</div>
+            <div class="testimonial-ctx">Cellar Club of 6, Melbourne</div>
+          </div>
+        </div>
+        <div class="testimonial reveal">
+          <div class="testimonial-stars">★★★★★</div>
+          <div class="testimonial-quote">"I went from guessing randomly to recognising oak and tannin profiles. The Palate Profile tracking is genuinely addictive."</div>
+          <div class="testimonial-footer">
+            <div class="testimonial-name">Priya M.</div>
+            <div class="testimonial-ctx">WSET Level 2 student</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FAQ ═══ -->
+  <section class="section" id="faq">
+    <div class="container">
+      <div class="reveal"><span class="pill">FAQ</span></div>
+      <h2 class="section-title reveal">Common questions</h2>
+      <div class="faq-list">
+        <div class="faq-item"><button class="faq-q">What drinks does CinCin support?<span class="faq-icon">+</span></button><div class="faq-a"><p>Wine, beer, and spirits — any bottle with a label. Our AI recognition covers major international and Australian/NZ producers, and improves continuously as users scan more bottles.</p></div></div>
+        <div class="faq-item"><button class="faq-q">Do I need to know about wine to play?<span class="faq-icon">+</span></button><div class="faq-a"><p>Not at all. Beginners learn by playing — you'll start recognising notes you never noticed before. The scoring system rewards bravery and the Palate Profile tracks your growth.</p></div></div>
+        <div class="faq-item"><button class="faq-q">Can I play without internet?<span class="faq-icon">+</span></button><div class="faq-a"><p>Yes. Once you've scanned a bottle while online, you can play games with that bottle completely offline. Results sync automatically when you reconnect.</p></div></div>
+        <div class="faq-item"><button class="faq-q">Free vs Pro — what's the difference?<span class="faq-icon">+</span></button><div class="faq-a"><p>Free gives you 5 scans per month, 1 Cellar Club, and default game settings. Pro unlocks unlimited scans, full Palate Profile analytics, unlimited clubs, custom game settings, game history, and an ad-free experience.</p></div></div>
+        <div class="faq-item"><button class="faq-q">How does scoring work?<span class="faq-icon">+</span></button><div class="faq-a"><p>A correct generic guess = +1 (or +2 for producer/official notes). A specific variant = +2 (or +3 for producer notes). Wrong guess = −1. You can opt out anytime to lock your current score.</p></div></div>
+        <div class="faq-item"><button class="faq-q">When is the app launching?<span class="faq-icon">+</span></button><div class="faq-a"><p>We're in closed beta now in Australia and New Zealand. Public launch is coming soon — sign up to be first in line. UK and US expansion is planned for Year 2.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FINAL CTA ═══ -->
+  <section class="section" style="position:relative;overflow:hidden">
+    <div class="cta-bg"></div>
+    <div class="container" style="text-align:center;max-width:560px">
+      <div class="reveal">
+        <h2 class="section-title">Ready to find out how good your palate really is?</h2>
+        <p style="font-size:15px;color:var(--light);margin-top:16px;margin-bottom:36px">Grab a bottle, gather your mates, and settle it once and for all.</p>
+        <a href="https://app.playcincin.com/auth/signup" class="btn-primary">Get Started — It's Free</a>
+        <p style="font-size:11px;color:var(--muted);margin-top:20px">Join the beta · No credit card required</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div>
+          <div class="footer-brand-name">CinCin</div>
+          <div class="footer-brand-desc">AI-powered tasting game.<br>Scan. Taste. Compete.</div>
+        </div>
+        <div class="footer-cols">
+          <div>
+            <div class="footer-col-title">Product</div>
+            <a href="#how">How It Works</a>
+            <a href="#features">Features</a>
+            <a href="#pricing">Pricing</a>
+            <a href="#faq">FAQ</a>
+          </div>
+          <div>
+            <div class="footer-col-title">Company</div>
+            <a href="/privacy">Privacy Policy</a>
+            <a href="/terms">Terms of Service</a>
+            <a href="mailto:hello@playcincin.com">Contact</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 CinCin. All rights reserved. Must be 18+ to use.</span>
+        <span>Designed &amp; built in Sydney 🇦🇺</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ═══ JAVASCRIPT ═══ -->
+  <script>
+    // ── Nav scroll effect ──
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 50);
+    }, { passive: true });
+
+    // ── Mobile menu ──
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobile-menu');
+    hamburger.addEventListener('click', () => {
+      const open = mobileMenu.classList.toggle('open');
+      hamburger.innerHTML = open
+        ? '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M6 18L18 6"/></svg>'
+        : '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>';
+    });
+    function closeMobile() {
+      mobileMenu.classList.remove('open');
+      hamburger.innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>';
+    }
+
+    // ── Phone screen rotation ──
+    let phoneStep = 0;
+    setInterval(() => {
+      document.querySelectorAll('.phone-screen').forEach((s, i) => s.classList.toggle('active', i === phoneStep));
+      document.querySelectorAll('.phone-dot').forEach((d, i) => d.classList.toggle('active', i === phoneStep));
+      phoneStep = (phoneStep + 1) % 3;
+    }, 3200);
+
+    // ── Scroll reveal ──
+    const reveals = document.querySelectorAll('.reveal');
+    const revealObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    reveals.forEach(el => revealObs.observe(el));
+
+    // ── Counter animation ──
+    const counters = document.querySelectorAll('[data-count]');
+    const counterObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        const el = e.target;
+        const end = parseInt(el.dataset.count);
+        const dur = 1800;
+        let start = null;
+        function step(ts) {
+          if (!start) start = ts;
+          const p = Math.min((ts - start) / dur, 1);
+          el.textContent = Math.floor(p * p * end).toLocaleString() + '+';
+          if (p < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+        counterObs.unobserve(el);
+      });
+    }, { threshold: 0.5 });
+    counters.forEach(el => counterObs.observe(el));
+
+    // ── FAQ accordion ──
+    document.querySelectorAll('.faq-q').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const item = btn.parentElement;
+        const wasOpen = item.classList.contains('open');
+        document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+        if (!wasOpen) item.classList.add('open');
+      });
+    });
+  </script>
+
+</body>
+</html>
