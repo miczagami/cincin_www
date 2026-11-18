@@ -18,26 +18,17 @@ cincin-website/
 
 ## Deployment
 
-This is a static site — deploy to any static host:
+Hosted on **Sevalla** as a static site: repo `miczagami/cincin_www`, branch `main`, no build command, publish directory = repo root. Pushing to `main` deploys.
 
-**Vercel:**
-```bash
-cd cincin-website
-vercel --prod
-```
+Full setup for all three CinCin services (this site, the app and the API) is in `cincin_backend/documentation/DEPLOYMENT-SEVALLA.md`.
 
-**Netlify:** Drag the folder into Netlify dashboard, or connect the repo.
-
-**AWS S3 + CloudFront:** Upload all files to an S3 bucket, front with CloudFront, point playcincin.com DNS.
-
-**GitHub Pages:** Push to a repo, enable Pages on the main branch.
-
-## DNS Setup
+## DNS Setup (Cloudflare, DNS only)
 
 | Domain | Points to |
 |--------|-----------|
-| `playcincin.com` | This static marketing site |
-| `app.playcincin.com` | The CinCin PWA (Vite/React app) |
+| `playcincin.com`, `www.playcincin.com` | This static marketing site (Sevalla static site) |
+| `app.playcincin.com` | The CinCin PWA (Sevalla static site) |
+| `api.playcincin.com` | The CinCin API (Sevalla application) |
 
 ## Links to the App
 
