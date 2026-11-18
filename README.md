@@ -8,11 +8,13 @@ Completely separate from the CinCin PWA (which lives at **app.playcincin.com**).
 
 ```
 cincin-website/
-├── index.html      ← The entire site (HTML + CSS + JS, zero dependencies)
-├── favicon.svg     ← CinCin "C" favicon
-├── robots.txt      ← Search engine crawl rules
-├── sitemap.xml     ← For Google/Bing indexing
-├── og-image.png    ← TODO: Create 1200×630 OG image (see below)
+├── index.html          ← The entire site (HTML + CSS + JS, zero dependencies)
+├── brand/              ← Logo SVGs (stacked, horizontal, mark, wordmark; -dark = for cream backgrounds)
+├── favicon.svg         ← Glasses mark on espresso
+├── apple-touch-icon.png
+├── og-image.png        ← 1200×630 social share image
+├── robots.txt          ← Search engine crawl rules
+├── sitemap.xml         ← For Google/Bing indexing
 └── README.md
 ```
 
@@ -34,20 +36,15 @@ Full setup for all three CinCin services (this site, the app and the API) is in 
 
 All CTAs point to `https://app.playcincin.com/auth/signup` or `https://app.playcincin.com/auth/login`. Update these URLs if your PWA subdomain changes.
 
-## OG Image
+## Brand
 
-Create a 1200×630 image for social sharing. Suggested design:
-- Background: #0A0A0A
-- Radial cyan glow at center
-- "CinCin" in white, 96px bold
-- "AI · TASTING · GAME" in #22D3EE, small caps
-- "Scan. Taste. Compete." in #CCCCCC
+Styled to the **CinCin Brand Guidelines v1**: Espresso `#241C18`/`#2E2420`, Merlot `#63192B`, Gold `#CBA135`, Cream `#F0E6D2`, set in Poppins. The colour tokens are CSS variables at the top of `index.html`. Buttons are pills: gold primary, merlot secondary, cream outline, gold text link.
 
-Save as `og-image.png` in this directory.
+The logo files in `brand/` were extracted from the guideline PDF as vectors, and the same files ship in the app (`cincin_frontend/public/brand/`). Don't redraw or recolour them. Use the `-dark` versions on cream or gold backgrounds.
 
 ## Customisation
 
 - **Stat numbers**: Edit the `data-count` attributes in the stats section (currently placeholder values)
-- **Testimonials**: Replace with real beta tester quotes before launch
+- **Testimonials**: Replace with real beta tester quotes before launch (current ones are placeholders)
 - **Pricing**: Monthly $12.99, annual $9.99/mo — matches the PWA SubscriptionPage
 - **Footer links**: `/privacy` and `/terms` pages need to be created (separate HTML files)
