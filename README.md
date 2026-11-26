@@ -18,6 +18,8 @@ cincin_www/
 │   ├── sitemap.xml         ← For Google/Bing indexing
 │   └── _redirects          ← Sevalla redirect rules: www.playcincin.com → playcincin.com (301)
 ├── docs/                   ← Agent docs (not published)
+├── CLAUDE.md               ← Agent instructions (not published)
+├── .gitignore
 └── README.md
 ```
 
