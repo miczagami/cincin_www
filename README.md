@@ -17,17 +17,23 @@ cincin_www/
 │   ├── robots.txt          ← Search engine crawl rules
 │   ├── sitemap.xml         ← For Google/Bing indexing
 │   └── _redirects          ← Sevalla redirect rules: www.playcincin.com → playcincin.com (301)
-├── docs/                   ← Agent docs (not published)
-├── CLAUDE.md               ← Agent instructions (not published)
-├── .gitignore              ← (not published)
+├── docs/                   ← Agent docs
+├── CLAUDE.md               ← Agent instructions
+├── .gitignore
 └── README.md
 ```
 
-Only `public/` is served. Put every new page or asset there; everything outside it stays private.
+Put every new page or asset in `public/`; everything outside it stays private.
 
 ## Deployment
 
 Hosted on **Sevalla** as a static site: repo `miczagami/cincin_www`, branch `main`, no build command, publish directory `public`. Pushing to `main` deploys.
+
+**Before merging the move into `public/`** (the site is leaving Vercel for Sevalla):
+1. Disconnect the `cincin_www` Vercel project from Git (Vercel → Project → Settings → Git → Disconnect). Otherwise the merge redeploys Vercel, which may still publish the repo root and would then 404.
+2. If the Sevalla static site already exists, set its publish directory to `public` and clear its Error file.
+
+Until the DNS switch, the live domains keep serving Vercel's last deployment, so merged changes don't go live there yet.
 
 `public/_redirects` permanently redirects every path on `www.playcincin.com` to the same path on `playcincin.com`. It only takes effect once both domains are added to the static site.
 
