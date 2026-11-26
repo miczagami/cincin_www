@@ -1,0 +1,3 @@
+# Sevalla static-site redirects (applied at the edge; this file itself is not served).
+# www is a second domain on this site: send every path to the same path on the apex.
+https://www.playcincin.com/*  https://playcincin.com/:splat  301!
