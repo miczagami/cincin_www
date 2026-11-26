@@ -19,11 +19,11 @@ cincin_www/
 │   └── _redirects          ← Sevalla redirect rules: www.playcincin.com → playcincin.com (301)
 ├── docs/                   ← Agent docs (not published)
 ├── CLAUDE.md               ← Agent instructions (not published)
-├── .gitignore
+├── .gitignore              ← (not published)
 └── README.md
 ```
 
-Put every new page or asset in `public/`. Files outside it (this README, `CLAUDE.md`, `docs/`) stay private.
+Only `public/` is served. Put every new page or asset there; everything outside it stays private.
 
 ## Deployment
 
