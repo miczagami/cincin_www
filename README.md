@@ -61,6 +61,6 @@ The logo files in `public/brand/` were extracted from the guideline PDF as vecto
 
 ## Customisation
 
-- **Claims**: The site shows no stats, counts, testimonials or popularity badges. Add one only if it is true and, for a quote, consented (Australian Consumer Law s18; the ABAC copy audit).
+- **Claims**: The site shows no stats, counts, testimonials or popularity badges. Add one only if it is true and, for a quote, consented (Australian Consumer Law s18; see the ABAC copy audit, `research/abac-copy-audit.md` in `cincin_frontend`, and miczagami/cincin_www#6).
 - **Pricing**: Monthly $12.99, annual $9.99/mo — matches the PWA SubscriptionPage
 - **Footer links**: `/privacy` and `/terms` pages need to be created (separate HTML files)
