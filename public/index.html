@@ -72,12 +72,10 @@
       --cream: #F3ECDD;         /* headings */
       --cream-bg: #F0E6D2;      /* brand Cream — light surfaces */
       --gold: #CBA135;
-      --gold-ink: #8A6A12;      /* gold shifted darker for cream surfaces */
       --gold-dim: rgba(203,161,53,0.14);
       --gold-glow: rgba(203,161,53,0.35);
       --merlot: #63192B;
       --merlot-bright: #7A1F3B;
-      --merlot-light: #8C2F45;  /* merlot for cream surfaces */
       --wine: #B4475F;          /* merlot that reads on espresso */
       --green: #8FBF7A;
       --red: #E8796B;
@@ -424,12 +422,6 @@
       background: linear-gradient(160deg, var(--card) 0%, rgba(99,25,43,0.75) 100%);
       border-color: rgba(203,161,53,0.35);
     }
-    .price-popular {
-      position: absolute; top: 20px; right: 20px;
-      background: var(--gold); color: var(--espresso);
-      font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
-      padding: 5px 12px; border-radius: 999px;
-    }
     .price-tier { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 16px; color: var(--muted); }
     .price-card.pro .price-tier { color: var(--gold); }
     .price-amount { font-size: 2.6rem; font-weight: 800; color: var(--cream); }
@@ -763,7 +755,6 @@
         </div>
         <!-- Pro -->
         <div class="price-card pro reveal">
-          <div class="price-popular">Most Popular</div>
           <div class="price-tier">Pro</div>
           <div><span class="price-amount">$9.99</span> <span class="price-period">/mo</span></div>
           <div class="price-note">Billed annually · or $12.99 monthly</div>
