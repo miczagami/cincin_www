@@ -350,24 +350,6 @@
     .ph-bowl.line { box-shadow: inset 0 0 0 1.5px var(--border); color: var(--cream); }
 
     /* ═══════════════════════════════════════════
-       STATS BAR
-       ═══════════════════════════════════════════ */
-    .stats {
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      padding: 40px 0;
-      position: relative; z-index: 2;
-    }
-    .stats-inner {
-      max-width: 800px; margin: 0 auto; padding: 0 24px;
-      display: flex; align-items: center; justify-content: center; gap: 64px;
-    }
-    .stat { text-align: center; }
-    .stat-num { font-size: clamp(1.6rem, 3vw, 2.3rem); font-weight: 800; color: var(--gold); font-variant-numeric: tabular-nums; }
-    .stat-label { font-size: 12px; color: var(--muted); margin-top: 2px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; }
-    @media (max-width: 600px) { .stats-inner { gap: 28px; } .stat-label { font-size: 10px; } }
-
-    /* ═══════════════════════════════════════════
        HOW IT WORKS
        ═══════════════════════════════════════════ */
     .steps-grid {
@@ -467,29 +449,6 @@
     .price-card .btn { width: 100%; }
     .price-trial { font-size: 12px; color: var(--muted); text-align: center; margin-top: 12px; }
     @media (max-width: 700px) { .pricing-grid { grid-template-columns: 1fr; } .price-card { padding: 26px; } }
-
-    /* ═══════════════════════════════════════════
-       TESTIMONIALS — cream cards (guide "Voice" cards)
-       ═══════════════════════════════════════════ */
-    .testimonials-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-      margin-top: 56px;
-    }
-    .testimonial {
-      background: var(--cream-bg);
-      border-radius: 20px;
-      padding: 28px;
-      display: flex;
-      flex-direction: column;
-    }
-    .testimonial-stars { color: var(--gold-ink); font-size: 13px; margin-bottom: 12px; letter-spacing: 2px; }
-    .testimonial-quote { font-size: 15px; color: var(--espresso); line-height: 1.6; flex: 1; }
-    .testimonial-footer { margin-top: 18px; padding-top: 14px; border-top: 1px solid rgba(36,28,24,0.15); }
-    .testimonial-name { font-size: 14px; font-weight: 700; color: var(--merlot-light); }
-    .testimonial-ctx { font-size: 12px; color: #6B5D52; margin-top: 2px; }
-    @media (max-width: 800px) { .testimonials-grid { grid-template-columns: 1fr; } }
 
     /* ═══════════════════════════════════════════
        FAQ
@@ -696,15 +655,6 @@
     </div>
   </section>
 
-  <!-- ═══ STATS ═══ -->
-  <section class="stats" id="stats-section">
-    <div class="stats-inner">
-      <div class="stat reveal"><div class="stat-num" data-count="12400">0</div><div class="stat-label">Bottles scanned</div></div>
-      <div class="stat reveal"><div class="stat-num" data-count="48200">0</div><div class="stat-label">Games played</div></div>
-      <div class="stat reveal"><div class="stat-num" data-count="1850">0</div><div class="stat-label">Cellar Clubs</div></div>
-    </div>
-  </section>
-
   <!-- ═══ HOW IT WORKS ═══ -->
   <section class="section" id="how">
     <div class="container">
@@ -740,7 +690,7 @@
           <div>
             <div class="step-icon">🏆</div>
             <div class="step-title">See the reveal</div>
-            <div class="step-desc">Every note uncovered, with sources. Your Palate Profile updates itself. Share the results, or pour another.</div>
+            <div class="step-desc">Every note uncovered, with sources. Your Palate Profile updates itself. Share the results, or save the bottle for next time.</div>
           </div>
         </div>
       </div>
@@ -761,7 +711,7 @@
         <div class="feature-card reveal">
           <div class="feature-icon">🏆</div>
           <div class="feature-title">Cellar Club Leagues</div>
-          <div class="feature-desc">Start a club with your mates, set a season end date, and run a proper league. Points carry across every game — not just one bottle.</div>
+          <div class="feature-desc">Start a club with your mates, set a season end date, and run a proper league with a table everyone can see.</div>
         </div>
         <div class="feature-card accent reveal">
           <span class="pill pro-badge">Pro</span>
@@ -782,7 +732,7 @@
         <div class="feature-card reveal">
           <div class="feature-icon">🛑</div>
           <div class="feature-title">Lock In Your Score</div>
-          <div class="feature-desc">Bank your points any time and watch everyone else risk theirs. Knowing when to stop is half the game.</div>
+          <div class="feature-desc">Happy with your haul? Lock it in any time, and let everyone else keep hunting for notes.</div>
         </div>
       </div>
     </div>
@@ -828,42 +778,6 @@
           </ul>
           <a href="https://app.playcincin.com/auth/signup" class="btn btn-primary">Start 7-Day Free Trial</a>
           <div class="price-trial">Trial starts after your first game · Cancel anytime</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ═══ TESTIMONIALS ═══ -->
-  <section class="section">
-    <div class="container">
-      <div class="reveal" style="text-align:center">
-        <span class="pill">From Beta Testers</span>
-        <h2 class="section-title" style="margin-top:16px">Built for wine nights,<br><em>perfected by mates</em></h2>
-      </div>
-      <div class="testimonials-grid">
-        <div class="testimonial reveal">
-          <div class="testimonial-stars">★★★★★</div>
-          <div class="testimonial-quote">"We used to just drink wine — now we actually pay attention to what we're tasting. The scoring makes it properly competitive."</div>
-          <div class="testimonial-footer">
-            <div class="testimonial-name">Sarah K.</div>
-            <div class="testimonial-ctx">Weekly wine club, Sydney</div>
-          </div>
-        </div>
-        <div class="testimonial reveal">
-          <div class="testimonial-stars">★★★★★</div>
-          <div class="testimonial-quote">"My mates thought they were craft beer experts until CinCin exposed their palate blind spots. It's become a weekly grudge match."</div>
-          <div class="testimonial-footer">
-            <div class="testimonial-name">James T.</div>
-            <div class="testimonial-ctx">Cellar Club of 6, Melbourne</div>
-          </div>
-        </div>
-        <div class="testimonial reveal">
-          <div class="testimonial-stars">★★★★★</div>
-          <div class="testimonial-quote">"I went from guessing randomly to recognising oak and tannin profiles. The Palate Profile tracking is genuinely addictive."</div>
-          <div class="testimonial-footer">
-            <div class="testimonial-name">Priya M.</div>
-            <div class="testimonial-ctx">WSET Level 2 student</div>
-          </div>
         </div>
       </div>
     </div>
@@ -969,27 +883,6 @@
       entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); } });
     }, { threshold: 0.12 });
     reveals.forEach(el => revealObs.observe(el));
-
-    // ── Counter animation ──
-    const counters = document.querySelectorAll('[data-count]');
-    const counterObs = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (!e.isIntersecting) return;
-        const el = e.target;
-        const end = parseInt(el.dataset.count);
-        const dur = 1800;
-        let start = null;
-        function step(ts) {
-          if (!start) start = ts;
-          const p = Math.min((ts - start) / dur, 1);
-          el.textContent = Math.floor(p * p * end).toLocaleString() + '+';
-          if (p < 1) requestAnimationFrame(step);
-        }
-        requestAnimationFrame(step);
-        counterObs.unobserve(el);
-      });
-    }, { threshold: 0.5 });
-    counters.forEach(el => counterObs.observe(el));
 
     // ── FAQ accordion ──
     document.querySelectorAll('.faq-q').forEach(btn => {
