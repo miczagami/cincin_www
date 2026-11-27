@@ -27,13 +27,15 @@ Put every new page or asset in `public/`; everything outside it stays private.
 
 ## Deployment
 
-Hosted on **Sevalla** as a static site: repo `miczagami/cincin_www`, branch `main`, no build command, publish directory `public`. Pushing to `main` deploys.
+Hosted on **Sevalla** as a static site: repo `miczagami/cincin_www`, branch `main`, no build command, publish directory `public`, Error file empty. Pushing to `main` deploys to Sevalla, which is live once the domains point there.
 
-**Before merging the move into `public/`** (the site is leaving Vercel for Sevalla):
+### Moving off Vercel (remove this section after the runbook's step 7 cleanup)
+
+Before merging the move into `public/`:
 1. Disconnect the `cincin_www` Vercel project from Git (Vercel → Project → Settings → Git → Disconnect). Otherwise the merge redeploys Vercel, which may still publish the repo root and would then 404.
-2. If the Sevalla static site already exists, set its publish directory to `public` and clear its Error file.
+2. Whenever you create or update the Sevalla static site, set its publish directory to `public` and leave its Error file empty. A blank publish directory publishes the repo root, private files included.
 
-Until the DNS switch, the live domains keep serving Vercel's last deployment, so merged changes don't go live there yet.
+Until the DNS switch, the live domains keep serving Vercel's last deployment. Merged changes don't go live there yet, and that deployment still serves `/README.md`, `/CLAUDE.md` and `/docs/` from the old root layout.
 
 `public/_redirects` permanently redirects every path on `www.playcincin.com` to the same path on `playcincin.com`. It only takes effect once both domains are added to the static site.
 
